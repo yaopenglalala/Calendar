@@ -8,7 +8,7 @@ public class CalendarDate {
     private int month;
     private int day;
 
-    public CalendarDate(int year, int month, int day){
+    public CalendarDate(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -16,13 +16,22 @@ public class CalendarDate {
 
     /**
      * a constructor that can return a CalendarDate object through the given string.
+     *
      * @param dateString format: 2018-3-18
      */
-    public CalendarDate(String dateString){}
+    public CalendarDate(String dateString) throws CalendarConstructException {
+        if (DateUtil.isFormatted(dateString)){
+            String[] calendarArray = dateString.split("-");
+            this.year = Integer.parseInt(calendarArray[0]);
+            this.month = Integer.parseInt(calendarArray[1]);
+            this.day = Integer.parseInt(calendarArray[2]);
+        }else throw new CalendarConstructException("It's not a legal string");
+    }
 
     public int getYear() {
         return year;
     }
+
     public void setYear(int year) {
         this.year = year;
     }
@@ -45,13 +54,16 @@ public class CalendarDate {
 
     /**
      * Get index of the day in a week for one date.
-     *
+     * <p>
      * Don't use the existing implement like Calendar.setTime(),
      * try to implement your own algorithm.
+     *
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
-    public int getDayOfWeek(){
-        return 0;
+    public int getDayOfWeek() {
+        if (DateUtil.isValid(this));
+        int c = year / 100;
+        int y = year - c * 100;
+        return ((c / 4) - 2 * c + (y + y / 4) + (13 * (month + 1) / 5) + day - 1) / 7;
     }
-
 }

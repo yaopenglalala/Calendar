@@ -5,6 +5,7 @@
 * you should implement them before you use.
 *
 * */
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,7 +26,15 @@ public class DateUtil {
      * @return a list of days in a whole month
      */
     public static List<CalendarDate> getDaysInMonth(CalendarDate date){
-        return null;
+        if (date == null || !isValid(date)) return null;
+        ArrayList<CalendarDate> daysInMonth = new ArrayList<>();
+        CalendarDate tmpDate;
+        for (int i = 1 ; i <= 31 ; i ++){
+            tmpDate = new CalendarDate(date.getYear() , date.getMonth() , i);
+            if (!isValid(tmpDate)) break;
+            else daysInMonth.add(tmpDate);
+        }
+        return daysInMonth;
     }
 
     /**
@@ -34,6 +43,15 @@ public class DateUtil {
      * @return true if the date is valid, false if the date is not valid.
      */
     public static boolean isValid(CalendarDate date){
+        int year = date.getYear();
+        int month = date.getMonth();
+        int day = date.getDay();
+        if (year < 1800 || year > 2100) return false;
+        else if (day < 1 || day > 31) return false;
+        else if ((day > 30) && (month == 2 || month == 4 || month == 6 || month == 9
+                || month == 11)) return false;
+        else if ((day > 29) && (month == 2)) return false;
+        else if ((day > 28) && (month == 2) && !isLeapYear(year)) return false;
         return true;
     }
 
@@ -44,6 +62,17 @@ public class DateUtil {
      * @return true if the input is formatted, false if the input is not formatted.
      */
     public static boolean isFormatted(String dateString){
+        String[] calendarArray = dateString.split("-");
+        if (calendarArray.length != 3) return false;
+        else {
+            for (String s : calendarArray){
+                try{
+                    Integer.parseInt(s);
+                } catch (Exception e){
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -54,7 +83,7 @@ public class DateUtil {
      * @return true if the input year is a leap year, false if the input is not.
      */
     public static boolean isLeapYear(int year){
-        return true;
+        return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
     }
 
 }
