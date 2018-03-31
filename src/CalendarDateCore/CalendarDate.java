@@ -1,6 +1,10 @@
+package CalendarDateCore;
+
+import CalendarExceptions.CalendarConstructException;
+
 /**
  * We have finished part of this class yet, you should finish the rest.
- * 1. A constructor that can return a CalendarDate object through the given string.
+ * 1. A constructor that can return a CalendarDateCore.CalendarDate object through the given string.
  * 2. A method named getDayOfWeek() that can get the index of a day in a week.
  */
 public class CalendarDate {
@@ -15,7 +19,7 @@ public class CalendarDate {
     }
 
     /**
-     * a constructor that can return a CalendarDate object through the given string.
+     * a constructor that can return a CalendarDateCore.CalendarDate object through the given string.
      *
      * @param dateString format: 2018-3-18
      */
@@ -64,6 +68,7 @@ public class CalendarDate {
         if (DateUtil.isValid(this));
         int c = year / 100;
         int y = year - c * 100;
-        return ((c / 4) - 2 * c + (y + y / 4) + (13 * (month + 1) / 5) + day - 1) / 7;
+        int w = (c / 4) - 2 * c + y + ( y / 4) + ( 26 * (month+1) / 10) + day - 1;
+        return (w % 7 - 7) %7 + 7;
     }
 }
