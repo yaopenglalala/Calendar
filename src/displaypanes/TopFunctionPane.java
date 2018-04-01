@@ -1,6 +1,6 @@
-package CalendarDisplayPanes;
+package displaypanes;
 
-import CalendarDateCore.CalendarDate;
+import init.CalendarDate;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,7 +8,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
 public class TopFunctionPane extends HBox{
-    private CalendarDate currentDate;
     private Label currentDateLabel;
 
     private FlowPane userInputPane;
@@ -54,7 +53,7 @@ public class TopFunctionPane extends HBox{
         this.searchButton.getStyleClass().add("searchButton");
 
         this.resetButton = new Button("reset");
-        this.searchButton.getStyleClass().add("resetButton");
+        this.resetButton.getStyleClass().add("resetButton");
 
         this.userInputPane.getChildren().addAll(yearChoiceLabel, yearsChoiceInput, monthChoiceLabel, monthsChoiceInput, jumpButton, searchInput, searchButton, resetButton);
 
@@ -66,7 +65,6 @@ public class TopFunctionPane extends HBox{
     }
 
     public void setCurrentDateLabel(CalendarDate date) {
-        this.currentDate = date;
         String currentDateString = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
         this.currentDateLabel.setText(currentDateString);
     }

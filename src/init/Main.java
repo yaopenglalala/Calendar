@@ -1,4 +1,6 @@
-import CalendarDateCore.CalendarDate;
+package init;
+
+import init.Display;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -13,7 +15,7 @@ public class Main extends Application{
     }
 
     public static void main(String[] args){
-        //todo  We will run this class to test your codes.
+        //We will run this class to test your codes.
         Application.launch(args);
     }
 }

@@ -1,8 +1,8 @@
-package CalendarDisplayPanes;
+package displaypanes;
 
-import CalendarDateCore.CalendarDate;
-import CalendarDateCore.DateUtil;
-import CalendarExceptions.DateIllegalException;
+import init.CalendarDate;
+import init.DateUtil;
+import exceptions.DateIllegalException;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -22,7 +22,7 @@ public class DaysOfMonth extends Pane{
         daysOfMonthButtons = new Button[6][7];
 
         this.getChildren().add(newDaysOfMonthPane());
-       // this.getStyleClass().add("daysPane");
+        this.getStyleClass().add("daysPane");
         this.getStylesheets().add(getClass().getResource("/DaysCSS.css").toExternalForm());
         updateDays(date);
     }
@@ -30,22 +30,20 @@ public class DaysOfMonth extends Pane{
     public void updateDays(CalendarDate date){
         List<CalendarDate> dates =  DateUtil.getDaysInMonth(date);
         if (dates == null) throw new DateIllegalException("It's not legal");
-        else {
-            //Set the month's days and week
-            int start = dates.get(0).getDayOfWeek() % 7;
-            int index;
-            for (int i = 0; i < daysOfMonthButtons.length ; i ++){
-                for (int j = 0; j < daysOfMonthButtons[i].length; j++){
-                    index = (j - start) + i * 7;
-                    daysOfMonthButtons[i][j].getStyleClass().remove("choosedDay");
-                    if (index < 0 || index >= dates.size()) {
-                        daysOfMonthButtons[i][j].setText("");
-                        daysOfMonthButtons[i][j].getStyleClass().remove("dayButton");
-                    } else {
-                        daysOfMonthButtons[i][j].setText(dates.get(index).getDay() + "");
-                        daysOfMonthButtons[i][j].getStyleClass().add("dayButton");
-                        if (dates.get(index).getDay() == date.getDay()) daysOfMonthButtons[i][j].getStyleClass().add("choosedDay");
-                    }
+        //Set the month's days and week
+        int start = dates.get(0).getDayOfWeek() % 7;
+        int index;
+        for (int i = 0; i < daysOfMonthButtons.length ; i ++){
+            for (int j = 0; j < daysOfMonthButtons[i].length; j++){
+                index = (j - start) + i * 7;
+                daysOfMonthButtons[i][j].getStyleClass().remove("choosedDay");
+                if (index < 0 || index >= dates.size()) {
+                    daysOfMonthButtons[i][j].setText("");
+                    daysOfMonthButtons[i][j].getStyleClass().remove("dayButton");
+                } else {
+                    daysOfMonthButtons[i][j].setText(dates.get(index).getDay() + "");
+                    daysOfMonthButtons[i][j].getStyleClass().add("dayButton");
+                    if (dates.get(index).getDay() == date.getDay()) daysOfMonthButtons[i][j].getStyleClass().add("choosedDay");
                 }
             }
         }

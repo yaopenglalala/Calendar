@@ -1,20 +1,21 @@
-package CalendarDateCore;/*
+package init;/*
 * This class provides some utils that may help you to finish this lab.
 * getToday() is finished, you can use this method to get the current date.
 * The other four methods getDaysInMonth(), isValid(), isFormatted() and isLeapYear() are not finished,
 * you should implement them before you use.
 *
 * */
-import CalendarDateCore.CalendarDate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class DateUtil {
+
+    private DateUtil(){}
     /**
-     * get a CalendarDateCore.CalendarDate instance point to today
-     * @return a CalendarDateCore.CalendarDate object
+     * get a init.CalendarDate instance point to today
+     * @return a init.CalendarDate object
      */
     public static CalendarDate getToday(){
         Calendar calendar = Calendar.getInstance();
@@ -55,13 +56,6 @@ public class DateUtil {
                 ((day <= 30) || (month != 2 && month != 4 && month != 6 && month != 9 && month != 11)) &&
                 ((day <= 29) || (month != 2)) &&
                 ((day <= 28) || (month != 2) || isLeapYear(year));
-//        else if (month > 12 || month < 1) return false;
-//        else if (day < 1 || day > 31) return false;
-//        else if ((day > 30) && (month == 2 || month == 4 || month == 6 || month == 9
-//                || month == 11)) return false;
-//        else if ((day > 29) && (month == 2)) return false;
-//        else if ((day > 28) && (month == 2) && !isLeapYear(year)) return false;
-//        return true;
     }
 
     /**

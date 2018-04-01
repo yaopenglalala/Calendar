@@ -1,4 +1,4 @@
-package CalendarExceptions;
+package exceptions;
 
 public class CalendarConstructException extends RuntimeException{
     public CalendarConstructException(String message){

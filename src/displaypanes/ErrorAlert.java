@@ -1,4 +1,4 @@
-package CalendarDisplayPanes;
+package displaypanes;
 
 import javafx.scene.control.Alert;
 
