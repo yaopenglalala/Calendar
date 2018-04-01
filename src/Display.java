@@ -4,6 +4,7 @@ import CalendarDisplayPanes.DaysOfMonth;
 import CalendarDisplayPanes.ErrorAlert;
 import CalendarDisplayPanes.TopFunctionPane;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class Display{
 
     public Display(Stage stage){
         init();
+        stage.setResizable(false);
 
         VBox frame = new VBox();
         frame.getChildren().addAll(topPane, days);
@@ -38,8 +40,10 @@ public class Display{
      */
     private void init(){
         today = DateUtil.getToday();
-        topPane = new TopFunctionPane(today);
-        days = new DaysOfMonth(today);
+        currentDate = DateUtil.getToday();
+
+        topPane = new TopFunctionPane(currentDate);
+        days = new DaysOfMonth(currentDate);
 
         topPane.getJumpButton().setOnAction(e -> {
             String yearString = topPane.getYearsChoiceInput().getText();
@@ -67,10 +71,26 @@ public class Display{
                 else {
                     currentDate = tmpDate;
                     paintDays(currentDate);
-                    updateTopPane();
+                    updateTopPane(currentDate);
                 }
             }
         });
+
+        topPane.getResetButton().setOnAction(e ->{
+            paintDays(today);
+        });
+
+        Button[][] daysButtons = days.getDaysOfMonthButtons();
+        for (Button[] daysButton : daysButtons) {
+            for (Button dayButton : daysButton) {
+                dayButton.setOnAction(e -> {
+                    if (!dayButton.getText().equals("")) {
+                        currentDate.setDay(Integer.parseInt(dayButton.getText()));
+                        paintDays(currentDate);
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -78,8 +98,11 @@ public class Display{
      * @param date a valid CalendarDateCore.CalendarDate param.
      */
     private boolean paintDays(CalendarDate date){
-        currentDate = date;
+        currentDate.setYear(date.getYear());
+        currentDate.setMonth(date.getMonth());
+        currentDate.setDay(date.getDay());
         try{
+            updateTopPane(date);
             days.updateDays(currentDate);
         } catch (Exception e){
             return false;
@@ -97,8 +120,9 @@ public class Display{
         }
     }
 
-    public void updateTopPane(){
-        topPane.getYearsChoiceInput().setText(currentDate.getYear() + "");
-        topPane.getMonthsChoiceInput().setText(currentDate.getMonth() + "");
+    public void updateTopPane(CalendarDate date){
+        topPane.setCurrentDateLabel(date);
+        topPane.getYearsChoiceInput().setText(date.getYear() + "");
+        topPane.getMonthsChoiceInput().setText(date.getMonth() + "");
     }
 }

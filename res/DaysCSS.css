@@ -1,21 +1,29 @@
 .daysPane{
-
+    -fx-padding: 0px 0px;
+    -fx-alignmentt: center;
 }
 
 .weekName{
-    -fx-pref-height: 130px;
-    -fx-label-padding: 15px;
-    -fx-font-size: 20px;
-    -fx-text-alignment: right;
+    -fx-pref-height: 100px;
+    -fx-font-size: 28px;
+    -fx-alignment: center;
     -fx-font-weight: bolder;
 }
 .nullButton{
-    -fx-font-size: 18px;
-    -fx-pref-height: 130px;
-    -fx-pref-width: 130px;
+    -fx-font-size: 24px;
+    -fx-pref-height: 120px;
+    -fx-pref-width: 120px;
     -fx-background-color: rgba(0,0,0,0);
 }
 
+.choosedDay{
+    -fx-background-color: #2e2eff;
+}
+
 .dayButton:hover{
-    -fx-background-color: #51a2ff;
+    -fx-background-color: #72b6ff;
+}
+
+.choosedDay:hover{
+    -fx-background-color: #2e2eff;
 }

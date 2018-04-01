@@ -5,10 +5,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 
-public class TopFunctionPane extends FlowPane{
+public class TopFunctionPane extends HBox{
     private CalendarDate currentDate;
     private Label currentDateLabel;
+
+    private FlowPane userInputPane;
+
     private Label yearChoiceLabel;
     private TextField yearsChoiceInput;
     private Label monthChoiceLabel;
@@ -18,12 +22,19 @@ public class TopFunctionPane extends FlowPane{
     private TextField searchInput;
     private Button searchButton;
 
+    private Button resetButton;
     public TopFunctionPane(CalendarDate date){
         super();
 
         this.currentDateLabel = new Label();
         this.currentDateLabel.getStyleClass().add("currentDateLabel");
         setCurrentDateLabel(date);
+
+        //user input pane
+        this.userInputPane = new FlowPane();
+        this.userInputPane.getStyleClass().add("userInputPane");
+        this.userInputPane.setHgap(15);
+        this.userInputPane.setVgap(10);
 
         this.yearChoiceLabel = new Label("YEAR:");
         this.yearChoiceLabel.getStyleClass().add("yearLabel");
@@ -42,11 +53,16 @@ public class TopFunctionPane extends FlowPane{
         this.searchButton = new Button("search");
         this.searchButton.getStyleClass().add("searchButton");
 
-        this.getChildren().addAll(currentDateLabel, yearChoiceLabel, yearsChoiceInput, monthChoiceLabel, monthsChoiceInput, jumpButton, searchInput, searchButton);
+        this.resetButton = new Button("reset");
+        this.searchButton.getStyleClass().add("resetButton");
+
+        this.userInputPane.getChildren().addAll(yearChoiceLabel, yearsChoiceInput, monthChoiceLabel, monthsChoiceInput, jumpButton, searchInput, searchButton, resetButton);
+
+        //form the whole top pane
+        this.getChildren().addAll(currentDateLabel, userInputPane);
 
         this.getStylesheets().add(getClass().getResource("/TopPaneCSS.css").toExternalForm());
-        this.setHgap(15);
-        this.setVgap(20);
+        this.setSpacing(70);
     }
 
     public void setCurrentDateLabel(CalendarDate date) {
@@ -54,7 +70,6 @@ public class TopFunctionPane extends FlowPane{
         String currentDateString = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
         this.currentDateLabel.setText(currentDateString);
     }
-
 
     public Button getJumpButton() {
         return jumpButton;
@@ -74,5 +89,9 @@ public class TopFunctionPane extends FlowPane{
 
     public TextField getSearchInput() {
         return searchInput;
+    }
+
+    public Button getResetButton() {
+        return resetButton;
     }
 }

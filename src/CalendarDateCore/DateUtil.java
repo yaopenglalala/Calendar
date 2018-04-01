@@ -49,14 +49,19 @@ public class DateUtil {
         int year = date.getYear();
         int month = date.getMonth();
         int day = date.getDay();
-        if (year < 1800 || year > 2100) return false;
-        else if (month > 12 || month < 1) return false;
-        else if (day < 1 || day > 31) return false;
-        else if ((day > 30) && (month == 2 || month == 4 || month == 6 || month == 9
-                || month == 11)) return false;
-        else if ((day > 29) && (month == 2)) return false;
-        else if ((day > 28) && (month == 2) && !isLeapYear(year)) return false;
-        return true;
+        return year >= 1800 && year <= 2300 &&
+                month <= 12 && month >= 1 &&
+                day >= 1 && day <= 31 &&
+                ((day <= 30) || (month != 2 && month != 4 && month != 6 && month != 9 && month != 11)) &&
+                ((day <= 29) || (month != 2)) &&
+                ((day <= 28) || (month != 2) || isLeapYear(year));
+//        else if (month > 12 || month < 1) return false;
+//        else if (day < 1 || day > 31) return false;
+//        else if ((day > 30) && (month == 2 || month == 4 || month == 6 || month == 9
+//                || month == 11)) return false;
+//        else if ((day > 29) && (month == 2)) return false;
+//        else if ((day > 28) && (month == 2) && !isLeapYear(year)) return false;
+//        return true;
     }
 
     /**
@@ -66,18 +71,18 @@ public class DateUtil {
      * @return true if the input is formatted, false if the input is not formatted.
      */
     public static boolean isFormatted(String dateString){
-        String[] calendarArray = dateString.split("-");
-        if (calendarArray.length != 3) return false;
-        else {
-            for (String s : calendarArray){
-                try{
+        try {
+            String[] calendarArray = dateString.split("-");
+            if (calendarArray.length != 3) return false;
+            else {
+                for (String s : calendarArray){
                     Integer.parseInt(s);
-                } catch (Exception e){
-                    return false;
                 }
             }
+            return true;
+        } catch (Exception e){
+            return false;
         }
-        return true;
     }
 
     /**
