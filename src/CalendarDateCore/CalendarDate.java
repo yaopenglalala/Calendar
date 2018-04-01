@@ -65,10 +65,17 @@ public class CalendarDate {
      * @return 1-7, 1 stands for Monday and 7 stands for Sunday
      */
     public int getDayOfWeek() {
-        if (DateUtil.isValid(this));
-        int c = year / 100;
-        int y = year - c * 100;
-        int w = (c / 4) - 2 * c + y + ( y / 4) + ( 26 * (month+1) / 10) + day - 1;
-        return (w % 7 - 7) %7 + 7;
+        if (!DateUtil.isValid(this)) return -1;
+        int yearZeller = year;
+        int monthZeller = month;
+        if (month < 3) {
+            yearZeller --;
+            monthZeller += 12;
+        }
+        int c = yearZeller / 100;
+        int y = yearZeller - c * 100;
+
+        int w = (c / 4) - (2 * c) + y + (y / 4) + ((13 * (monthZeller + 1)) / 5) + day - 1;
+        return (w % 7 - 7) % 7 + 7;
     }
 }

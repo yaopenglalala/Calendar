@@ -1,0 +1,21 @@
+.daysPane{
+
+}
+
+.weekName{
+    -fx-pref-height: 130px;
+    -fx-label-padding: 15px;
+    -fx-font-size: 20px;
+    -fx-text-alignment: right;
+    -fx-font-weight: bolder;
+}
+.nullButton{
+    -fx-font-size: 18px;
+    -fx-pref-height: 130px;
+    -fx-pref-width: 130px;
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.dayButton:hover{
+    -fx-background-color: #51a2ff;
+}

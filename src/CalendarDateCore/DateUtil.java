@@ -45,10 +45,12 @@ public class DateUtil {
      * @return true if the date is valid, false if the date is not valid.
      */
     public static boolean isValid(CalendarDate date){
+        if (date == null) return false;
         int year = date.getYear();
         int month = date.getMonth();
         int day = date.getDay();
         if (year < 1800 || year > 2100) return false;
+        else if (month > 12 || month < 1) return false;
         else if (day < 1 || day > 31) return false;
         else if ((day > 30) && (month == 2 || month == 4 || month == 6 || month == 9
                 || month == 11)) return false;

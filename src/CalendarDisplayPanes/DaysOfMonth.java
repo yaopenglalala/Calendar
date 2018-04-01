@@ -11,21 +11,19 @@ import java.util.List;
 import javafx.scene.control.Label;
 
 public class DaysOfMonth extends Pane{
+    CalendarDate currentDate;
     Label[] weekDays;
     Button[][] daysOfMonth;
 
     public DaysOfMonth(CalendarDate date){
+        currentDate = date;
         weekDays = new Label[7];
         daysOfMonth = new Button[6][7];
-        for (int i = 0; i < daysOfMonth.length ; i ++){
-            for (int j = 0; j < daysOfMonth[i].length; j++){
-                daysOfMonth[i][j] = new Button();
-            }
-        }
-
-        updateDays(date);
 
         this.getChildren().add(getDaysOfMonthPane());
+        this.getStyleClass().add("daysPane");
+        this.getStylesheets().add(getClass().getResource("/DaysCSS.css").toExternalForm());
+        updateDays(date);
     }
 
     public void updateDays(CalendarDate date){
@@ -38,8 +36,13 @@ public class DaysOfMonth extends Pane{
             for (int i = 0; i < daysOfMonth.length ; i ++){
                 for (int j = 0; j < daysOfMonth[i].length; j++){
                     index = (j - start) + i * 7;
-                    if (index < 0 || index >= dates.size()) daysOfMonth[i][j].setText("");
-                    else daysOfMonth[i][j].setText(dates.get(index).getDay() + "");
+                    if (index < 0 || index >= dates.size()) {
+                        daysOfMonth[i][j].setText("");
+                        daysOfMonth[i][j].getStyleClass().remove("dayButton");
+                    } else {
+                        daysOfMonth[i][j].setText(dates.get(index).getDay() + "");
+                        daysOfMonth[i][j].getStyleClass().add("dayButton");
+                    }
                 }
             }
         }
@@ -52,12 +55,15 @@ public class DaysOfMonth extends Pane{
         String[] weekDaysName = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         for (int i = 0 ; i < weekDaysName.length ; i ++){
             weekDays[i] = new Label(weekDaysName[i]);
+            weekDays[i].getStyleClass().add("weekName");
             daysOfMonthPane.add(weekDays[i] , i, 0);
         }
 
         //Add days of month
         for (int i = 0 ;i < daysOfMonth.length; i ++){
             for (int j = 0; j < daysOfMonth[i].length ; j++){
+                daysOfMonth[i][j] = new Button();
+                daysOfMonth[i][j].getStyleClass().add("nullButton");
                 daysOfMonthPane.add(daysOfMonth[i][j], j ,i + 1);
             }
         }
