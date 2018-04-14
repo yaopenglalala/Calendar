@@ -78,4 +78,12 @@ public class CalendarDate {
         int w = (c / 4) - (2 * c) + y + (y / 4) + ((13 * (monthZeller + 1)) / 5) + day - 1;
         return (w % 7 - 7) % 7 + 7;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        int year = ((CalendarDate) obj).getYear();
+        int month = ((CalendarDate) obj).getMonth();
+        int day = ((CalendarDate) obj).getDay();
+        return this.getYear() == year && this.getMonth() == month && this.getDay() == day;
+    }
 }

@@ -1,5 +1,9 @@
 package itemcontrol;
 
+import exceptions.ItemConstructException;
+import exceptions.TimeIllegalException;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Item {
@@ -9,8 +13,9 @@ public class Item {
     private String description;
 
     public Item(Date sTime, Date eTime, String t, String d){
-        setStartTime(sTime);
-        setEndTime(eTime);
+        if (sTime.after(eTime) || sTime.equals(eTime)) throw new ItemConstructException("Start time must before end time.");
+        this.startTime = sTime;
+        this.endTime = eTime;
         setTitle(t);
         setDescription(d);
     }
@@ -19,16 +24,15 @@ public class Item {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public boolean changeStartTimeAndEndTime(Date sTime, Date eTime){
+        if (sTime.after(eTime) || sTime.equals(eTime)) return false;
+        this.startTime = sTime;
+        this.endTime = eTime;
+        return true;
     }
 
     public String getTitle() {
@@ -36,6 +40,7 @@ public class Item {
     }
 
     public void setTitle(String title) {
+        if (title == null) throw new ItemConstructException("No title");
         this.title = title;
     }
 
@@ -44,6 +49,19 @@ public class Item {
     }
 
     public void setDescription(String description) {
+        if (description == null) throw  new ItemConstructException("No description");
         this.description = description;
+    }
+
+    public static Date stringToDate(String timeString){
+        Date result;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        simpleDateFormat.setLenient(false);
+        try{
+            result = simpleDateFormat.parse(timeString);
+        } catch (Exception e){
+            throw new TimeIllegalException("There is a wrong time expression.");
+        }
+        return result;
     }
 }
