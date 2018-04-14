@@ -60,7 +60,7 @@ public class TopFunctionPane extends HBox{
         //form the whole top pane
         this.getChildren().addAll(currentDateLabel, userInputPane);
 
-        this.getStylesheets().add(getClass().getResource("/TopPaneCSS.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource("/TopPaneCSS.css").toString());
         this.setSpacing(70);
     }
 

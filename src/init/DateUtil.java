@@ -69,9 +69,9 @@ public class DateUtil {
             String[] calendarArray = dateString.split("-");
             if (calendarArray.length != 3) return false;
             else {
-                for (String s : calendarArray){
-                    Integer.parseInt(s);
-                }
+                if (Integer.parseInt(calendarArray[0]) > 9999) return false;
+                if (Integer.parseInt(calendarArray[1]) > 99) return false;
+                if (Integer.parseInt(calendarArray[2]) > 99) return false;
             }
             return true;
         } catch (Exception e){

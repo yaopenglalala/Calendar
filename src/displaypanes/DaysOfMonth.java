@@ -23,7 +23,7 @@ public class DaysOfMonth extends Pane{
 
         this.getChildren().add(newDaysOfMonthPane());
         this.getStyleClass().add("daysPane");
-        this.getStylesheets().add(getClass().getResource("/DaysCSS.css").toExternalForm());
+        this.getStylesheets().add(getClass().getResource("/DaysCSS.css").toString());
         updateDays(date);
     }
 
