@@ -2,9 +2,12 @@ package init;
 
 import displaypanes.DaysOfMonth;
 import displaypanes.ErrorAlert;
+import displaypanes.ItemControlPane;
 import displaypanes.TopFunctionPane;
+import itemcontrol.ItemsController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -18,16 +21,20 @@ import javafx.stage.Stage;
 * */
 public class Display{
     private CalendarDate currentDate;
+    private ItemsController itemsController;
     private TopFunctionPane topPane;
     private DaysOfMonth days;
+    private ItemControlPane itemControlPane;
 
     public Display(Stage stage){
         init();
         stage.setResizable(false);
 
-        VBox frame = new VBox();
-        frame.getChildren().addAll(topPane, days);
+        VBox calendar = new VBox();
+        calendar.getChildren().addAll(topPane, days);
 
+        HBox frame = new HBox();
+        frame.getChildren().addAll(calendar, itemControlPane);
         Scene scene = new Scene(frame);
         stage.setTitle("Calendar");
         stage.setScene(scene);
@@ -39,9 +46,11 @@ public class Display{
      */
     private void init(){
         currentDate = DateUtil.getToday();
+        itemsController = new ItemsController();
 
         topPane = new TopFunctionPane(currentDate);
         days = new DaysOfMonth(currentDate);
+        itemControlPane = new ItemControlPane(itemsController);
 
         initJumpButton();
         initSearchButton();

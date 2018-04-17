@@ -28,13 +28,6 @@ public class Item {
         return endTime;
     }
 
-    public boolean changeStartTimeAndEndTime(Date sTime, Date eTime){
-        if (sTime.after(eTime) || sTime.equals(eTime)) return false;
-        this.startTime = sTime;
-        this.endTime = eTime;
-        return true;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -55,7 +48,7 @@ public class Item {
 
     public static Date stringToDate(String timeString){
         Date result;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         simpleDateFormat.setLenient(false);
         try{
             result = simpleDateFormat.parse(timeString);

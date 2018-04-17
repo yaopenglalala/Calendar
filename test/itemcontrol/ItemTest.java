@@ -1,5 +1,6 @@
 package itemcontrol;
 
+import exceptions.ItemConstructException;
 import exceptions.TimeIllegalException;
 import org.junit.After;
 import org.junit.Before;
@@ -22,48 +23,81 @@ public class ItemTest {
     }
 
     @Test
-    public void testChangeStartTimeAndEndTime(){
-        Item testItem = new Item(Item.stringToDate("1998-11-5 15:12:23"),
-                Item.stringToDate("1998-11-6 15:12:23"),"","");
+    public void testSetTitleNull(){
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
         boolean error = false;
-        try {
-            testItem.changeStartTimeAndEndTime(Item.stringToDate(""), Item.stringToDate(""));
-        } catch (TimeIllegalException e){
+        try{
+            testItem.setTitle(null);
+        } catch (ItemConstructException e){
             error = true;
         }
         assertTrue(error);
-
-        assertFalse(testItem.changeStartTimeAndEndTime(Item.stringToDate("1998-11-6 15:12:23"),
-                Item.stringToDate("1998-11-5 15:12:23")));
-
-        assertTrue(testItem.changeStartTimeAndEndTime(Item.stringToDate("1998-11-17 15:12:23"),
-                Item.stringToDate("1998-11-19 15:12:23")));
-
-        assertTrue(Item.stringToDate("1998-11-17 15:12:23").equals(testItem.getStartTime()));
-        assertTrue(Item.stringToDate("1998-11-19 15:12:23").equals(testItem.getEndTime()));
     }
 
     @Test
-    public void testStringToDate() throws Exception {
-//        String[] illegalFormat = {"fdafdsa","1999-12-32 12:12:12","1999-15-12 12:12:12"
-//
-//        };
-        assertNull(Item.stringToDate("fdafdsa"));
-        assertNull(Item.stringToDate("1999-12-32 12:12:12"));
-        assertNull(Item.stringToDate("1999-15-12 12:12:12"));
-        assertNull(Item.stringToDate("0-12-15 12:12:12"));
-        assertNull(Item.stringToDate("1999-12-15 25:12:12"));
-        assertNull(Item.stringToDate("1999-12-15 24:12:12"));
-        assertNull(Item.stringToDate("1999-12-15 23:61:12"));
-        assertNull(Item.stringToDate("1999-12-15 23:59:61"));
+    public void testSetTitleNotNull(){
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        boolean error = false;
+        try{
+            testItem.setTitle("dfafs");
+        } catch (ItemConstructException e){
+            error = true;
+        }
+        assertFalse(error);
+    }
 
+    @Test
+    public void testSetDescriptionNull(){
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        boolean error = false;
+        try{
+            testItem.setDescription(null);
+        } catch (ItemConstructException e){
+            error = true;
+        }
+        assertTrue(error);
+    }
 
+    @Test
+    public void testSetDescriptionNotNull(){
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        boolean error = false;
+        try{
+            testItem.setDescription("");
+        } catch (ItemConstructException e){
+            error = true;
+        }
+        assertFalse(error);
+    }
+
+    @Test
+    public void testStringToDateNotFormatted(){
+        boolean error;
+        String[] illegalFormats = {"fdafdsa","1999-12-32 12:12:12","1999-15-12 12:12:12","0-12-15 12:12:12",
+                "1999-12-15 25:12:12", "1999-12-15 24:12:12", "1999-12-15 23:61:12","1999-12-15 23:59:61",
+                "1998-2-29 12:12:12"
+        };
+        for (String illegalFormat : illegalFormats){
+            try{
+                error = false;
+                Item.stringToDate(illegalFormat);
+            } catch (TimeIllegalException e){
+                error = true;
+            }
+            assertTrue(error);
+        }
+    }
+
+    @Test
+    public void testStringToDateFormatted(){
         assertNotNull(Item.stringToDate("1999-12-12 12:12:12"));
 
         Date time = new Date();
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-        assert(ft.parse(ft.format(time)).equals(Item.stringToDate(ft.format(time))));
+        try{
+            assert(ft.parse(ft.format(time)).equals(Item.stringToDate(ft.format(time))));
+        } catch (Exception e){
+            throw new AssertionError();
+        }
     }
-
-
 }

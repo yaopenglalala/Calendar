@@ -4,12 +4,11 @@ import init.CalendarDate;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class ItemController {
+public class ItemsController {
     private ArrayList<Item> items;
 
-    public ItemController(){
+    public ItemsController(){
         items = new ArrayList<>();
     }
 
@@ -45,7 +44,7 @@ public class ItemController {
         }
     }
 
-    public List<Item> searchItem(Date startDate, Date endDate){
+    public ArrayList<Item> searchItem(Date startDate, Date endDate){
         ArrayList<Item> results = new ArrayList<>();
         for (Item item : items) {
             if (! (item.getStartTime().after(endDate) || item.getEndTime().before(startDate))){
@@ -55,7 +54,7 @@ public class ItemController {
         return results;
     }
 
-    public List<Item> searchItem(CalendarDate date){
+    public ArrayList<Item> searchItem(CalendarDate date){
         String dateString = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
         Date startDate = Item.stringToDate( dateString + " 00:00:00");
         Date endDate = Item.stringToDate(dateString + " 23:59:59");
