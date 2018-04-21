@@ -20,6 +20,10 @@
     -fx-background-color: #515aff;
 }
 
+.itemDay{
+    -fx-font-weight: bold;
+}
+
 .dayButton:hover{
     -fx-background-color: #78bcff;
 }

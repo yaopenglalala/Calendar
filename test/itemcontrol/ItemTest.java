@@ -23,20 +23,24 @@ public class ItemTest {
     }
 
     @Test
-    public void testSetTitleNull(){
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
-        boolean error = false;
+    public void testSetTitleNullOrEmpty(){
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"test","" );
         try{
             testItem.setTitle(null);
         } catch (ItemConstructException e){
-            error = true;
+            assertTrue(e.getMessage().equals("No title"));
         }
-        assertTrue(error);
+
+        try{
+            testItem.setTitle("");
+        } catch (ItemConstructException e){
+            assertTrue(e.getMessage().equals("No title"));
+        }
     }
 
     @Test
     public void testSetTitleNotNull(){
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"fdsaf","" );
         boolean error = false;
         try{
             testItem.setTitle("dfafs");
@@ -48,19 +52,19 @@ public class ItemTest {
 
     @Test
     public void testSetDescriptionNull(){
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"test","" );
         boolean error = false;
         try{
             testItem.setDescription(null);
-        } catch (ItemConstructException e){
+        } catch (Exception e){
             error = true;
         }
-        assertTrue(error);
+        assertFalse(error);
     }
 
     @Test
     public void testSetDescriptionNotNull(){
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"test","" );
         boolean error = false;
         try{
             testItem.setDescription("");
@@ -73,9 +77,8 @@ public class ItemTest {
     @Test
     public void testStringToDateNotFormatted(){
         boolean error;
-        String[] illegalFormats = {"fdafdsa","1999-12-32 12:12:12","1999-15-12 12:12:12","0-12-15 12:12:12",
-                "1999-12-15 25:12:12", "1999-12-15 24:12:12", "1999-12-15 23:61:12","1999-12-15 23:59:61",
-                "1998-2-29 12:12:12"
+        String[] illegalFormats = {"fdafdsa","1999-12-32 12:12","1999-15-12 12:12","0-12-15 12:12",
+                "1999-12-15 25:12", "1999-12-15 24:12", "1999-12-15 23:61", "1998-2-29 12:12"
         };
         for (String illegalFormat : illegalFormats){
             try{
@@ -90,10 +93,10 @@ public class ItemTest {
 
     @Test
     public void testStringToDateFormatted(){
-        assertNotNull(Item.stringToDate("1999-12-12 12:12:12"));
+        assertNotNull(Item.stringToDate("1999-12-12 12:12"));
 
         Date time = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
         try{
             assert(ft.parse(ft.format(time)).equals(Item.stringToDate(ft.format(time))));
         } catch (Exception e){

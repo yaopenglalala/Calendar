@@ -1,5 +1,6 @@
 package itemcontrol;
 
+import exceptions.ItemConstructException;
 import init.CalendarDate;
 import init.DateUtil;
 import org.junit.After;
@@ -26,43 +27,65 @@ public class ItemsControllerTest {
     public void testRemoveFalse(){
         ItemsController itemController = new ItemsController();
         assertFalse(itemController.removeItem(null));
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"test","" );
         assertFalse(itemController.removeItem(testItem));
     }
 
     @Test
     public void testRemoveTrue(){
         ItemsController itemController = new ItemsController();
-        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"","" );
+        Item testItem = new Item(Item.stringToDate("1998-11-5 22:12:15"),Item.stringToDate("1999-11-5 22:12:15"),"test","" );
         itemController.addItem(testItem);
         assertTrue(itemController.removeItem(testItem));
         assertFalse(itemController.getItems().contains(testItem));
     }
 
     @Test
-    public void testAddItemFalse(){
+    public void testAddItemNoDateException() throws Exception{
         ItemsController itemController = new ItemsController();
-        assertFalse(itemController.addItem(null, null, null));
-        assertFalse(itemController.addItem(DateUtil.getToday(), null, null));
-        assertFalse(itemController.addItem(DateUtil.getToday(), "", null));
+        try {
+            itemController.addItem(null, null, null);
+        }catch (ItemConstructException e){
+            assertTrue(e.getMessage().equals("No date"));
+        }
     }
 
     @Test
-    public void testAddItemTrue(){
+    public void testAddItemNoTitleException() throws Exception{
         ItemsController itemController = new ItemsController();
-        assertTrue(itemController.addItem(DateUtil.getToday(), "", ""));
+        try{
+            assertFalse(itemController.addItem(DateUtil.getToday(), null, null));
+            assertTrue(false);
+        }catch (ItemConstructException e){
+            assertTrue(e.getMessage().equals("No title"));
+        }
+
+        try{
+            assertFalse(itemController.addItem(DateUtil.getToday(), "", null));
+            assertTrue(false);
+        }catch (ItemConstructException e){
+            assertTrue(e.getMessage().equals("No title"));
+        }
     }
 
     @Test
-    public void testSearchItemNotIn(){
+    public void testAddItemTrue() throws Exception{
         ItemsController itemController = new ItemsController();
-        itemController.addItem(DateUtil.getToday(), "", "");
+        assertTrue(itemController.addItem(Item.stringToDate("2018-12-12 12:12"), Item.stringToDate("2018-12-13 12:12"), "test" , null));
+        assertTrue(itemController.addItem(DateUtil.getToday(), "test", null));
+        assertTrue(itemController.addItem(DateUtil.getToday(), "test", ""));
+    }
+
+    @Test
+    public void testSearchItemNotIn() throws Exception{
+        ItemsController itemController = new ItemsController();
+        itemController.addItem(DateUtil.getToday(), "test", "");
 
         assertTrue(itemController.searchItem(new CalendarDate(1998, 12, 12)).isEmpty());
     }
 
     @Test
-    public void testSearchItemIn(){
+    public void testSearchItemIn() throws Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         ItemsController itemController = new ItemsController();
         itemController.addItem(new CalendarDate(1998, 12, 13), "title0", "description0");

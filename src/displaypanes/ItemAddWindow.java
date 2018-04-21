@@ -2,17 +2,20 @@ package displaypanes;
 
 import exceptions.TimeIllegalException;
 import init.CalendarDate;
+import init.Display;
 import itemcontrol.Item;
 import itemcontrol.ItemsController;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.ws.Dispatch;
 import java.util.Date;
 
 
@@ -34,8 +37,13 @@ public class ItemAddWindow {
         add.setOnAction(event -> {
             String titleString = titleInput.getText();
             String desString = desInput.getText();
-            if (!items.addItem(date, titleString, desString)) new ErrorAlert("Title and description can not be empty").showAndWait();
-            else window.close();
+            try {
+                items.addItem(date, titleString, desString);
+                Display.getDisplay().fresh();
+                window.close();
+            }catch (Exception e){
+                new ErrorAlert(e.getMessage()).showAndWait();
+            }
         });
         cancel.setOnAction(event -> window.close());
 
@@ -57,9 +65,10 @@ public class ItemAddWindow {
             try {
                 Date sTime = Item.stringToDate(sTimeString);
                 Date eTime = Item.stringToDate(eTimeString);
-                if (!items.addItem(sTime, eTime, titleString, desString)) new ErrorAlert("Title and description can not be empty").showAndWait();
-                else window.close();
-            } catch (TimeIllegalException e){
+                items.addItem(sTime, eTime, titleString, desString);
+                Display.getDisplay().fresh();
+                window.close();
+            } catch (Exception e){
                 new ErrorAlert(e.getMessage()).showAndWait();
             }
         });
@@ -69,45 +78,46 @@ public class ItemAddWindow {
         window.showAndWait();
     }
 
-
-    private VBox init(int way){
-        VBox frame = new VBox();
+    private GridPane init(int way){
+        GridPane frame = new GridPane();
+        frame.setAlignment(Pos.CENTER);
+        frame.setPadding(new Insets(5, 10, 10 , 10));
+        frame.setVgap(10);
+        frame.setHgap(8);
 
         //start time
-        HBox sTimeBox = new HBox();
         Label sTimeLabel = new Label("Start time: ");
         sTimeInput = new TextField();
-        sTimeBox.getChildren().addAll(sTimeLabel, sTimeInput);
 
         //end Time
-        HBox eTimeBox = new HBox();
         Label eTimeLabel = new Label("End time: ");
         eTimeInput = new TextField();
-        eTimeBox.getChildren().addAll(eTimeLabel, eTimeInput);
 
         //title
-        HBox titleBox = new HBox();
         Label titleLabel = new Label("Title: ");
         titleInput = new TextField();
-        titleBox.getChildren().addAll(titleLabel, titleInput);
 
         //description
-        HBox desBox = new HBox();
         Label desLabel = new Label("Description: ");
         desInput = new TextField();
-        desBox.getChildren().addAll(desLabel, desInput);
 
         //buttons
-        HBox buttonsBox = new HBox();
         add = new Button("add");
         cancel = new Button("cancel");
-        buttonsBox.getChildren().addAll(add, cancel);
 
-        if (way == 1){
-            frame.getChildren().addAll(titleBox, desBox);
-        } else if (way == 2){
-            frame.getChildren().addAll(sTimeBox, eTimeBox, titleBox, desBox, buttonsBox);
+        if (way == 2){
+            frame.add(sTimeLabel, 0, 0);
+            frame.add(sTimeInput, 1, 0);
+            frame.add(eTimeLabel, 0, 1);
+            frame.add(eTimeInput, 1,1);
         }
+
+        frame.add(titleLabel, 0, 2);
+        frame.add(titleInput, 1, 2);
+        frame.add(desLabel, 0, 3);
+        frame.add(desInput, 1,3);
+        frame.add(add, 0, 4);
+        frame.add(cancel, 1, 4);
 
         return frame;
     }

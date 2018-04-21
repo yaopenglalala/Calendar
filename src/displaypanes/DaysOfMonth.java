@@ -3,6 +3,7 @@ package displaypanes;
 import init.CalendarDate;
 import init.DateUtil;
 import exceptions.DateIllegalException;
+import itemcontrol.ItemsController;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -28,6 +29,10 @@ public class DaysOfMonth extends Pane{
     }
 
     public void updateDays(CalendarDate date){
+        updateDays(date, null);
+    }
+
+    public void updateDays(CalendarDate date, ItemsController itemsController){
         List<CalendarDate> dates =  DateUtil.getDaysInMonth(date);
         if (dates == null) throw new DateIllegalException("It's not legal");
         //Set the month's days and week
@@ -37,13 +42,16 @@ public class DaysOfMonth extends Pane{
             for (int j = 0; j < daysOfMonthButtons[i].length; j++){
                 index = (j - start) + i * 7;
                 daysOfMonthButtons[i][j].getStyleClass().remove("choosedDay");
+                daysOfMonthButtons[i][j].getStyleClass().remove("itemDay");
                 if (index < 0 || index >= dates.size()) {
                     daysOfMonthButtons[i][j].setText("");
                     daysOfMonthButtons[i][j].getStyleClass().remove("dayButton");
+                    daysOfMonthButtons[i][j].getStyleClass().remove("itemDay");
                 } else {
                     daysOfMonthButtons[i][j].setText(dates.get(index).getDay() + "");
                     daysOfMonthButtons[i][j].getStyleClass().add("dayButton");
                     if (dates.get(index).getDay() == date.getDay()) daysOfMonthButtons[i][j].getStyleClass().add("choosedDay");
+                    if (itemsController != null && !itemsController.searchItem(dates.get(index)).isEmpty()) daysOfMonthButtons[i][j].getStyleClass().add("itemDay");
                 }
             }
         }

@@ -1,8 +1,10 @@
 package displaypanes;
 
+import init.Display;
 import itemcontrol.Item;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
 import java.text.SimpleDateFormat;
@@ -13,16 +15,31 @@ public class ItemPane extends VBox{
 
     private Label time;
     private Label title;
-    private Label description;
+    private TextArea descriptionText;
 
     private Button deleteButton;
 
     public ItemPane(){
+        Display display = Display.getDisplay();
+
         item = null;
         time = new Label();
         title = new Label();
-        description = new Label();
-        deleteButton = new Button("delete");
+        deleteButton = new Button();
+        title.setMaxWidth(400);
+        this.deleteButton.setOnAction(event -> {
+            display.getItemsController().removeItem(this.getItem());
+            display.fresh();
+        });
+
+        VBox description = new VBox();
+        Label desLabel = new Label();
+        descriptionText = new TextArea();
+        desLabel.setText("Description: ");
+        description.setMaxWidth(400);
+        description.setMaxHeight(120);
+        description.getChildren().addAll(desLabel, descriptionText);
+
         init();
         this.getChildren().addAll(time, title, description, deleteButton);
     }
@@ -34,16 +51,12 @@ public class ItemPane extends VBox{
         }else {
             this.time.setText("Time: "+ dateToString(item.getStartTime()) + "～" + dateToString(item.getEndTime()));
             this.title.setText("Title: "+ item.getTitle());
-            this.description.setText("Description: "+ item.getDescription());
+            this.descriptionText.setText(item.getDescription());
         }
     }
 
     public Item getItem(){
         return item;
-    }
-
-    public Button getDeleteButton() {
-        return deleteButton;
     }
 
     private static String dateToString(Date date){
@@ -55,6 +68,7 @@ public class ItemPane extends VBox{
     private void init(){
         this.time.setText("Time: NULL");
         this.title.setText("Title: NULL");
-        this.description.setText("Description: NULL");
+        this.descriptionText.setText("NULL");
+        this.deleteButton.setText("delete");
     }
 }

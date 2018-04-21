@@ -33,7 +33,7 @@ public class Item {
     }
 
     public void setTitle(String title) {
-        if (title == null) throw new ItemConstructException("No title");
+        if (title == null || title.equals("")) throw new ItemConstructException("No title");
         this.title = title;
     }
 
@@ -42,7 +42,7 @@ public class Item {
     }
 
     public void setDescription(String description) {
-        if (description == null) throw  new ItemConstructException("No description");
+        if (description == null) description = "";
         this.description = description;
     }
 

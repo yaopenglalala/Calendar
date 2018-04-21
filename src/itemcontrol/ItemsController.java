@@ -1,5 +1,6 @@
 package itemcontrol;
 
+import exceptions.ItemConstructException;
 import init.CalendarDate;
 
 import java.util.ArrayList;
@@ -24,24 +25,17 @@ public class ItemsController {
         return item != null && this.items.add(item);
     }
 
-    public boolean addItem(Date startDate, Date endDate, String title, String description) {
-        try {
-            Item item = new Item(startDate, endDate, title, description);
-            return addItem(item);
-        }catch (Exception e){
-            return false;
-        }
+    public boolean addItem(Date startDate, Date endDate, String title, String description) throws Exception{
+        Item item = new Item(startDate, endDate, title, description);
+        return addItem(item);
     }
 
-    public boolean addItem(CalendarDate date, String title, String description){
-        try {
-            String dateString = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
-            return addItem(Item.stringToDate(dateString + " 00:00:00"),
+    public boolean addItem(CalendarDate date, String title, String description) throws Exception{
+        if (date == null) throw new ItemConstructException("No date");
+        String dateString = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
+        return addItem(Item.stringToDate(dateString + " 00:00:00"),
                     Item.stringToDate(dateString + " 23:59:59"),
                     title, description);
-        } catch (Exception e){
-            return  false;
-        }
     }
 
     public ArrayList<Item> searchItem(Date startDate, Date endDate){

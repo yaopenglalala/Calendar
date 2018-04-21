@@ -1,9 +1,6 @@
 package init;
 
-import displaypanes.DaysOfMonth;
-import displaypanes.ErrorAlert;
-import displaypanes.ItemControlPane;
-import displaypanes.TopFunctionPane;
+import displaypanes.*;
 import itemcontrol.ItemsController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +17,7 @@ import javafx.stage.Stage;
 * jump to one specific day's calendar
 * */
 public class Display{
+    private static Display display;
     private CalendarDate currentDate;
     private ItemsController itemsController;
     private TopFunctionPane topPane;
@@ -27,6 +25,7 @@ public class Display{
     private ItemControlPane itemControlPane;
 
     public Display(Stage stage){
+        display = this;
         init();
         stage.setResizable(false);
 
@@ -64,10 +63,16 @@ public class Display{
                     if (!dayButton.getText().equals("")) {
                         currentDate.setDay(Integer.parseInt(dayButton.getText()));
                         paintDays(currentDate);
+                        itemControlPane.searchItemByDate(currentDate);
                     }
                 });
             }
         }
+    }
+
+
+    public void fresh(){
+        paintDays(currentDate);
     }
 
     /**
@@ -80,7 +85,8 @@ public class Display{
         currentDate.setDay(date.getDay());
         try{
             updateTopPane(date);
-            days.updateDays(currentDate);
+            days.updateDays(currentDate, itemsController);
+            itemControlPane.searchItemByDate(date);
         } catch (Exception e){
             return false;
         }
@@ -101,6 +107,10 @@ public class Display{
         topPane.setCurrentDateLabel(date);
         topPane.getYearsChoiceInput().setText(date.getYear() + "");
         topPane.getMonthsChoiceInput().setText(date.getMonth() + "");
+    }
+
+    public static Display getDisplay(){
+        return display;
     }
 
     private void initJumpButton(){
@@ -136,5 +146,17 @@ public class Display{
                 }
             }
         });
+    }
+
+    public ItemControlPane getItemControlPane() {
+        return itemControlPane;
+    }
+
+    public ItemsController getItemsController() {
+        return itemsController;
+    }
+
+    public CalendarDate getCurrentDate() {
+        return currentDate;
     }
 }
